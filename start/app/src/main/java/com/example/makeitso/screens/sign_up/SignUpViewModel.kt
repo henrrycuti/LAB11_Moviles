@@ -56,9 +56,15 @@ class SignUpViewModel @Inject constructor(
   }
 
   fun onSignUpClick(openAndPopUp: (String, String) -> Unit) {
+    launchCatching {
+      accountService.linkAccount(email, password)
+      openAndPopUp(SETTINGS_SCREEN, SIGN_UP_SCREEN)
+    }
+
     if (!email.isValidEmail()) {
       SnackbarManager.showMessage(AppText.email_error)
       return
+
     }
 
     if (!password.isValidPassword()) {
